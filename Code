@@ -1,0 +1,1011 @@
+Coe 312 - Project Report 
+Scooby Doo: The Haunting of ESB
+
+Overview of the Game
+Provide a clear description of how the game works.  
+The game plays as follows:
+-	The player is introduced to The Gang (Shaggy, Scooby, Velma, Daphne, and Fred)
+-	He is then given a brief introduction to the story
+-	The Dean of Engineering hired the Scooby Gang to solve the paranormal case of the missing computers.
+-	The Gang engages in a non-playable cutscene with banter
+-	The Van arrives at The Street in front of ESB and gets introduced to the Villains (Ali Reza and Omar Arif)
+-	 Reintroduce the task to the player, explain the controls, and ensure the phone sensors work
+-	The player then enters ESB and is allowed free reign to the floor
+-	There are two floors with only the first floor accessible for clue-gathering which unlocks the second floor and the secret lair
+-	The floor has two classrooms, one bathroom, and a laboratory
+-	There are 4 clues in total in the rooms and 6 accessible by talking to The Gang and NPCs
+-	Picking up the clues requires the player to activate the search function and then proceed to use the Accelerometer (The clues in the bathroom require the flashlight to be turned on as well)
+-	As the player gathers clues the progress bar increases and when all 10 are collected a notification will appear for the player that a new floor has been unlocked
+-	The player then is allowed to use the elevator to go upstairs and confront the villains
+-	The villains then down their costumes and scare the player and The Gang
+-	The group flees and lure them outside into the street to be caught by the Police who were called by Velma
+We as a group think because how straightforward yet entertaining the game is allows the user/player to enjoy the mystery and nostalgia.
+As shown Below in the Youtube Link:
+https://youtu.be/gB3H_5lSVfc?si=ERtpycmbQ_pfkerK
+Description of Game Components
+Provide a description of the components of the game. Each subsection should describe in detail each component of the game.
+ 
+●	Objective
+ Scooby-Doo: The Haunting of Esb is a text based game made using java. The game focuses on a single player attempting to gather clues from different rooms to find the villain who stole electronic gadgets from the labs and bring them to justice.
+●	Scenes
+ Scenes Package:
+-	Scene interface
+-	Contains only basic functions to be inherited by the child classes
+-	Void enter which just informs the user they entered
+-	ESB
+-	Main scene where most of the functions will be called from entering rooms, transversing floors
+-	Contains multiple private values such as
+-	Current floor to keep track of floor location
+-	progress of the clues
+-	The name of clues themselves
+-	Flashlight recognition
+-	An array list for the number of floors
+-	Name of the building
+-	Start ESB function which sets up the floors and classrooms while notifying observers
+-	Announcement function which has an ascii animation of the scenes and characters introducing the  scene
+-	Void enter which just informs the user they entered
+-	Move up and Move down functions to transverse the floors
+-	Update function to update the gyro and Accelerometer and call their functions
+-	Classrooms
+-	Main area of the clues and NPCs with an enter and clue function
+-	A public function to initialize the classroom, progress and clue
+-	Void enter which just informs the user they entered
+-	Update function in order to update the clue
+
+-	Bathrooms
+-	Main area of the clues and NPCs with an enter and clue function
+-	A public initialization fucntion that updates the progress and clue
+-	Void enter which just informs the user they entered
+-	Update function in order to update the clue
+-	As well as the use of flashlight and gyro in order to pick up the clue
+-	
+-	Floor
+-	A subscene to allow rooms to be more organized
+-	A an array list function to hold the rooms
+-	An enter function to update the actual player's location
+-	Laboratory 
+-	Main area of the clues and NPCs with an enter and clue function
+-	A call function to initialize Lab with clue
+-	Void enter function
+-	Update function for clue and progress
+-	 
+-	Mvan
+-	Introductory Scene based almost completely on dialogue and Player introduction 
+
+-	Room
+-	Interface for the Laboratory, Bathroom and Classrooms with the main function of enter.
+-	with void enter
+-	Secret Lair
+-	The final showdown class where the villians will be called and initialized in order to act upon the player
+-	enter function
+-	announcement function
+-	and fight scene
+-	Street
+-	A simple scene was made to introduce the main villains and reiterate the purpose of the story.
+
+●	Objects
+-	Clues:
+-	They are our main object as they lead the player into the actual story and allows progression into the final Lair
+-	Individuals have clues in their constructors and initialize them so when the player reaches the point. 
+Daphne.java
+ package CharecterPackage;
+
+import SingletonObserverPattern.ConcreteSubject;
+import SingletonObserverPattern.Subject;
+import StratergyDesignPattern.NoInteraction;
+
+public class Daphne extends Charecter {
+	 public Daphne(ConcreteSubject subject) {
+	        super("Fred", subject);
+	        inct = new NoInteraction();
+	       
+	    }
+
+	    @Override
+	    public  int update(String cclas,int progress)
+		{
+	    	if (progress == 9&&this.clues!=1) {
+				// Do nothing if clue =1
+				this.giveclue();
+				this.clues=1;
+				return 1;
+			} 
+			return 0;
+	    }
+		public void giveclue()
+		{
+			System.out.println("Daphene:...it was...professor     Omar-");
+		}
+
+Fred.java
+
+package CharecterPackage;
+
+import SingletonObserverPattern.ConcreteSubject;
+import SingletonObserverPattern.Subject;
+import StratergyDesignPattern.NoInteraction;
+
+public class Fred extends Charecter {
+
+	public Fred(ConcreteSubject subject) {
+		super("Fred", subject);
+		inct = new NoInteraction();
+
+	}
+
+	@Override
+	public  int update(String cclass,int progress)
+	{
+		// Handle clues
+		if (progress == 1& this.clues!=1) {
+			// Do nothing if clue =1
+			this.giveclue();
+			this.clues=1;
+			return 1;
+		} 
+		return 0;}
+
+	public void giveclue()
+	{
+		System.out.println("Fred says: 'Huh? Oh, sorry, I was lost in thought.");
+	}
+	    
+	@Override
+	public void specialAbility() {
+		System.out.println("Fred says: 'I'm using my special ability!");
+		// Implement the logic for Fred's special ability here
+	}
+
+	@Override
+	public void speak() {
+		System.out.println("Fred says: 'Huh? Oh, sorry, I was lost in thought.");
+	}
+
+	// Method to set clues
+	public void setClues(int clues) {
+		this.clues = clues;
+	}
+}
+
+
+●	 Characters
+Useful: 
+-	Scooby Doo : Scooby is a class that extends Chaterecter. He uses Special Abilities and says “Ruh-roh”. Scooby also implements the Observer Singleton Pattern. And scooby also gives clues on where to go next.
+
+-	Shaggy : Similar to scooby, Shaggy also extends character class and uses special abilities. Shaggy says “Zoinks!”. Shaggy also gives clues to the player and shows progress in the game.
+
+-	Velma : Velma is highly intellectual and provides crucial deductions and analyses of clues. She says “Jinkies!”. She also uses the Observer Singleton Pattern and special abilities. 
+
+-	Prof. Ali Reza: He is the master of dark arts and has functions such as attack and special Action that uses Observer design pattern and strategy design pattern called DarkArtsAttack. 
+-	Prof. Omar Arif 
+Useless:
+-	Daphne : Daphne is a useless character who helps the player with clues and she shows up in the secret lari. She uses observer singleton design pattern
+-	Fred : Like daphne fred is also a useless character who uses observer singleton design pattern
+-	NPC’s : Npc is a useless villain character who has attack defend and takeDamage
+
+
+●	Sensors
+-	Gyro Rotation
+-	The gyro will be used to indicate the use of a flashlight, used in finding clues in the bathroom
+-	Magnetometer
+-	Compass item allowing the player to move through pointing to specific poels 
+-	Accelerometer
+-	The pickup function in order to pick up the clues 
+
+Using Design Patterns
+Briefly explain how each design pattern was used to put together the game.  For each design pattern explain where and how it was utilized in your code. Provide code segments (not full code) to explain how each design pattern was implemented.
+ 
+1.	Observer/Singleton
+-	Characters use observer singleton design patterns and strategy design pattern 
+
+Concrete Observer
+package SingletonObserverPattern;
+public class ConcreteObserver implements Observer {
+	
+	ConcreteSubject  subject = null;
+	public ConcreteObserver(ConcreteSubject subject2) {
+		
+		this.subject = subject2;
+		subject2.registerObserver(this);
+		}
+	
+	@Override
+	public synchronized int update(String cclass,int progress)
+	{
+		
+		return progress;
+	}
+}
+
+Concrete Subject
+package SingletonObserverPattern;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class ConcreteSubject implements Subject {
+	private ArrayList<Observer> observers;
+	Random r = new Random();
+	public int progress=1;
+	public ConcreteSubject() {
+		observers = new ArrayList<Observer>();
+	}
+	public void notifyObservers(String Cclass, int progress) throws InterruptedException {
+		for (int i = 0; i < observers.size(); i++) {
+			Observer observer = observers.get(i);
+			this.progress+= observer.update(Cclass,progress);			
+		}
+		System.out.println("Current Progress: " + progress);
+
+	}
+	public void registerObserver(Observer o) {
+		observers.add(o);
+	}
+
+	public void removeObsever(Observer o) {
+		observers.remove(o);
+	}
+	
+}
+Observer 
+package SingletonObserverPattern;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class ConcreteSubject implements Subject {
+	private ArrayList<Observer> observers;
+	Random r = new Random();
+	public int progress=1;
+	public ConcreteSubject() {
+		observers = new ArrayList<Observer>();
+	}
+	public void notifyObservers(String Cclass, int progress) throws InterruptedException {
+		for (int i = 0; i < observers.size(); i++) {
+			Observer observer = observers.get(i);
+			this.progress+= observer.update(Cclass,progress);			
+		}
+		System.out.println("Current Progress: " + progress);
+
+	}
+	public void registerObserver(Observer o) {
+		observers.add(o);
+	}
+
+	public void removeObsever(Observer o) {
+		observers.remove(o);
+	}
+	
+}
+
+Subject
+package SingletonObserverPattern;
+public interface Subject {
+	public void registerObserver(Observer o);
+	public void removeObsever(Observer o);
+	public void notifyObservers(String Cclass,int progress) throws InterruptedException;
+}
+
+
+2.	Template Method
+-	ESB
+package Scene;
+
+import java.util.ArrayList;
+import java.util.List;
+import SingletonObserverPattern.*;
+import sensor.*;
+import CharecterPackage.*;
+
+public class ESB  implements scene,SensorObserver, Observer {
+   
+	private int currentFloor;
+	int progress;
+	String clue,currentclass;
+	int progresstype,flashlight=1,action=1;
+    private List<Floor> floors;
+    private String name= "ESB";
+   
+    public void startESB(Player p0) {
+ 
+        floors = new ArrayList<>();
+
+            List<Room> rooms = new ArrayList<>();
+            Classrooms cl1=new Classrooms("ESB 1006",2,"Some say they see dark figures after-hours behind ESB");
+            p0.registerObserver(cl1);
+            
+            Classrooms cl2=new Classrooms("ESB 1009",4,"Labs for Software are usually the ones that finish the latest");
+            p0.registerObserver(cl2);
+            
+            Laboratory lab1=new Laboratory("Laboratory",6, "They worked in pairs");
+            p0.registerObserver(lab1);
+            
+            Bathroom bt1=new Bathroom("Bathroom1",8,"They greeted a couple of vistors, recently AND RAN TO LEVEL 2");
+            p0.registerObserver(bt1);
+            
+            rooms.add(cl1);
+            rooms.add(cl2);
+           rooms.add(lab1);
+           rooms.add(bt1);
+           floors.add(new Floor(rooms));
+        currentFloor = 0;
+       
+    }
+	@Override
+	public void announcement() {
+		
+		    System.out.println("LOADING!!!!");
+		    System.out.println("Welcome Player to "+name+"!!!!");		
+	}
+    
+    
+    @Override
+    public void enter() {
+        System.out.println("Welcome to ESB building!");
+    
+    }
+
+
+    public void moveUp() {
+        if (currentFloor < floors.size()) {
+            currentFloor++;
+            System.out.println("You moved up to floor " + currentFloor + ".");
+
+        } else {
+            System.out.println("You are already on the top floor.");
+        }
+    }
+
+    public void moveDown() {
+        if (currentFloor > 1) {
+            currentFloor--;
+            System.out.println("You moved down to floor " + currentFloor + ".");
+            
+        } else {
+            System.out.println("You are already on the ground floor.");
+        }
+    }
+
+	@Override
+	public int update(String cclass,int progress) throws InterruptedException {
+		// TODO Auto-generated method stub
+		this.progress= progress;
+		this.currentclass=cclass;
+		if (progress == 4) {
+			// Do nothing if clue =1
+			return 1;
+		} 
+		return 0;
+	}
+
+	@Override
+	public void update1(Message m) {
+		// TODO Auto-generated method stub
+		switch(m.sens) {
+		case "gyroRotationY":
+			System.out.println("Detected flashlight...");
+			this.flashlight=1;
+			//function call
+			break;
+		case "accelerometerAccelerationX":
+			System.out.println("Finding clues...");
+			this.action=1;//function call
+			break;
+		}
+	}
+	
+
+}
+
+
+Classrooms extends ESB
+
+package Scene;
+public class Classrooms extends ESB implements scene, Room  {
+	private String name;
+	public  Classrooms(String name,int progress, String clue) {
+		this.name = name;
+		this.progresstype=progress;
+		this.clue=clue;
+	}
+	@Override
+	public void enter() {
+		System.out.println("You are in " + name + " classroom.");
+	}
+	@Override
+	public int update(String cclass,int progress) {
+		if(cclass==name) {
+			this.enter();
+			if (progress == this.progresstype) {
+				System.out.println(this.clue);
+				return 1;
+			}
+		}
+			return 0;
+	
+	}
+}
+
+Bathroom extends ESB
+
+package Scene;
+class Bathroom extends ESB implements Room {
+   private String name;
+   public Bathroom(String name,int progress,String clue) {
+       this.name = name;
+       this.progresstype=progress;
+       this.clue=clue;
+    
+   }
+@Override
+public void enter() {
+System.out.println("You are in " + name + " bathroom.");
+}
+@Override
+public int update(String cclass,int progress) throws InterruptedException {
+	if(cclass==name) {
+		this.enter();
+		if(this.progresstype==progress)
+			
+		{
+			System.out.println("try turning on flashlight to find clue");
+			wait(5000);
+			if(this.flashlight==1)
+			{
+				System.out.println(this.clue);
+				this.flashlight=0;
+				return 1;
+			}
+			
+		}
+		
+	}return 0;
+}
+}
+
+3.	Strategy
+-	Main and characters 
+
+package StratergyDesignPattern;
+public interface Interact {
+		public void interact();
+}
+
+package StratergyDesignPattern;
+public class NoInteraction implements Interact{
+	public void interact()
+	{
+		System.out.println(this+"doesn't interact with anyone or any object as" +this+" is a useless charecter");
+	}
+}
+
+
+package StratergyDesignPattern;
+public class YesInteraction implements Interact {
+	public void interact()
+	{
+		System.out.println(this+"engages in conversation or interacts with objects.");
+	}
+}
+
+
+4.	State
+-	Used in ESB 
+
+package Scene;
+
+import java.util.ArrayList;
+import java.util.List;
+import SingletonObserverPattern.*;
+import sensor.*;
+import CharecterPackage.*;
+
+public class ESB  implements scene,SensorObserver, Observer {
+   
+	private int currentFloor;
+	int progress;
+	String clue,currentclass;
+	int progresstype,flashlight=1,action=1;
+    private List<Floor> floors;
+    private String name= "ESB";
+   
+    public void startESB(Player p0) {
+ 
+        floors = new ArrayList<>();
+
+            List<Room> rooms = new ArrayList<>();
+            Classrooms cl1=new Classrooms("ESB 1006",2,"Some say they see dark figures after-hours behind ESB");
+            p0.registerObserver(cl1);
+            
+            Classrooms cl2=new Classrooms("ESB 1009",4,"Labs for Software are usually the ones that finish the latest");
+            p0.registerObserver(cl2);
+            
+            Laboratory lab1=new Laboratory("Laboratory",6, "They worked in pairs");
+            p0.registerObserver(lab1);
+            
+            Bathroom bt1=new Bathroom("Bathroom1",8,"They greeted a couple of vistors, recently AND RAN TO LEVEL 2");
+            p0.registerObserver(bt1);
+            
+            rooms.add(cl1);
+            rooms.add(cl2);
+           rooms.add(lab1);
+           rooms.add(bt1);
+           floors.add(new Floor(rooms));
+        currentFloor = 0;
+       
+    }
+	@Override
+	public void announcement() {
+		
+		    System.out.println("LOADING!!!!");
+		    System.out.println("Welcome Player to "+name+"!!!!");		
+	}
+    
+    
+    @Override
+    public void enter() {
+        System.out.println("Welcome to ESB building!");
+    
+    }
+
+
+    public void moveUp() {
+        if (currentFloor < floors.size()) {
+            currentFloor++;
+            System.out.println("You moved up to floor " + currentFloor + ".");
+
+        } else {
+            System.out.println("You are already on the top floor.");
+        }
+    }
+
+    public void moveDown() {
+        if (currentFloor > 1) {
+            currentFloor--;
+            System.out.println("You moved down to floor " + currentFloor + ".");
+            
+        } else {
+            System.out.println("You are already on the ground floor.");
+        }
+    }
+
+	@Override
+	public int update(String cclass,int progress) throws InterruptedException {
+		// TODO Auto-generated method stub
+		this.progress= progress;
+		this.currentclass=cclass;
+		if (progress == 4) {
+			// Do nothing if clue =1
+			return 1;
+		} 
+		return 0;
+	}
+
+	@Override
+	public void update1(Message m) {
+		// TODO Auto-generated method stub
+		switch(m.sens) {
+		case "gyroRotationY":
+			System.out.println("Detected flashlight...");
+			this.flashlight=1;
+			//function call
+			break;
+		case "accelerometerAccelerationX":
+			System.out.println("Finding clues...");
+			this.action=1;//function call
+			break;
+		}
+	}
+	
+
+}
+
+5.	Command
+-	Implemented in Main 
+package Sproject;
+
+import Scene.*;
+import sensor.ConcreteSensorSubject;
+import sensor.SensorReader;
+import sensor.TCPClient;
+
+import java.io.IOException;
+import java.util.Scanner;
+import CharecterPackage.*;
+import VillainPackage.*;
+
+public class Main {
+
+	public static void main(String[] args) throws InterruptedException, IOException {
+
+		Scanner scanner= new Scanner(System.in);
+		Mvan mvan = new Mvan();
+		mvan.announcement();
+
+		Player p1= new Player();
+		Scooby scooby = new Scooby(p1);
+		Fred fred = new Fred(p1);
+		Velma velma = new Velma(p1);
+		Shaggy shaggy = new Shaggy(p1);
+		Daphne daphne = new Daphne(p1);
+
+		//TCPClient c1=new TCPClient("10.25.145.150",55734,"gyroRotationY",9);
+		//	TCPClient c2=new TCPClient("magnetometerY",200);
+		//TCPClient c3=new TCPClient("accelerometerAccelerationX",2);
+
+		//ConcreteSensorSubject[]s= {c1,c3};
+		//SensorReader reader = new SensorReader(s);
+
+
+		Street street= new Street();
+
+		//street.announcement();
+
+
+
+		ESB esb=new ESB();
+		esb.startESB(p1);
+		esb.announcement();
+
+
+
+		p1.notifyObservers(null,1);
+
+		while(true) {
+			if(p1.progress==9)
+
+			{
+
+				SecretLair Lair= new SecretLair();
+
+				System.out.println("What's that sound coming from upstairs?");
+
+				System.out.println("Seems like the elevator unlocked");
+
+				System.out.println("Do you want to proceed?");
+
+				System.out.println("1) Yes?        2) No?");
+
+				int action2=scanner.nextInt();
+
+				if(action2==1) {
+					esb.moveUp();
+					System.out.println("Good luck....");	
+					Lair.enter();
+					Lair.announcement();
+					ProfOmarArif prof = new ProfOmarArif();
+
+					while(prof.health>=0) {
+						System.out.println("Choose your actions:"
+								+ "1) hit with the power of love"
+								+ "2) fred"
+								+ "3) Daphene"
+								+ "4) Scooby"
+								+ "5) Velma"
+								+ "6) Shagy");
+
+						int action=scanner.nextInt();
+
+						switch(action) {
+						case 1:
+							prof.health= prof.health- 5;
+							break;
+						case 2:
+							fred.specialAbility();
+							prof.health= prof.health- 1;
+							break;
+						case 3:
+							daphne.specialAbility();
+							prof.health= prof.health- 15;
+							break;
+						case 4:
+							scooby.specialAbility();
+							prof.health= prof.health- 20;
+							break;
+						case 5:
+							velma.specialAbility();
+							prof.health= prof.health- 10;
+							break;
+						case 6:
+							shaggy.specialAbility();
+							prof.health= prof.health- 16;
+							break;
+						}
+						System.out.println("Prof health down:"+prof.health);
+					}
+				}
+			}
+				else
+				{
+					System.out.println("Choose your actions:"
+							+ "\n1) ESB 1006"
+							+ "\n2) ESB 1009"
+							+ "\n3) Lab"
+							+ "\n4) Bathroom"
+							+ "\n5) Move up a floor"
+							+ "\n6) Move down a floor");
+
+					int action=scanner.nextInt();
+
+					switch(action) {
+					case 1:
+						p1.notifyObservers("ESB 1006", p1.progress);
+						break;
+					case 2:
+						p1.notifyObservers("ESB 1009", p1.progress);
+						break;
+					case 3:
+						p1.notifyObservers("ESB Lab", p1.progress);
+						break;
+					case 4:
+						p1.notifyObservers("Bathroom", p1.progress);
+
+						break;
+					case 5:
+						if(p1.progress==8)
+						{
+
+							esb.moveUp();
+						}
+						else
+						{
+							System.out.println("You have no access to the secret lair ");
+						}
+						break;
+					case 6:
+						esb.moveDown();
+						break;
+					}
+				}
+			}
+		}
+	}
+
+
+
+
+
+
+
+ 
+ 
+Using Multithreading
+Explain how and why multithreading was used in the game. Clearly explain each thread and how synchronization was carried out.
+-	Multithreading was used for sensors
+
+Sensor Reader
+package sensor;
+public class SensorReader extends ConcreteSensorObserver implements Runnable {
+	public SensorReader(ConcreteSensorSubject[] subject) {
+		super(subject);
+		System.out.println("sensors activated");
+		Thread t = new Thread(this);
+		t.start();
+	}
+	@Override
+	public void run() {
+		//Do nothing, Messages printed through "update"
+	}
+}
+
+Using Sensors
+Explain how and which sensors were used in the game. Clearly explain each sensor and the algorithms used to process it.
+
+-	Gyro Rotation
+-	The gyro will be used to indicate the use of a flashlight, used in finding clues in the bathroom
+-	Magnetometer
+-	Compass item allowing the player to move through pointing to specific poels 
+-	Accelerometer
+-	The pickup function in order to pick up the clues 
+
+Concrete Sensor Observer: 
+package sensor;
+public class ConcreteSensorObserver implements SensorObserver {
+	protected ConcreteSensorSubject [] subject = null;
+	//Sensors are: gyroRotationY, magnetometerY, accelerometerAccelerationX
+	public ConcreteSensorObserver(ConcreteSensorSubject[] subject) {
+		
+		this.subject = subject;
+	
+		for(int i = 0; i<subject.length; i++) {
+			subject[i].registerObserver(this);
+		}
+	}
+	@Override
+	public synchronized void update1(Message m) {
+		switch(m.sens) {
+		case "gyroRotationY":
+			System.out.println("Detected flashlight...");
+			
+			//function call
+			break;
+		case "accelerometerAccelerationX":
+			System.out.println("Finding clues...");
+			//function call
+			break;
+		}
+			
+			
+	}
+	
+	public void update() {
+		System.out.println("no input arguments");
+	}
+	
+	
+}
+
+Concrete Sensor Subject
+package sensor;
+import java.util.ArrayList;
+public class ConcreteSensorSubject implements SensorSubject {
+	private ArrayList<SensorObserver> observers;
+	public ConcreteSensorSubject() {
+		observers = new ArrayList<SensorObserver>();
+	}
+	// change notify observer to send message
+	public void publishMessage(Message m) {
+		for (int i = 0; i < observers.size(); i++) {
+			SensorObserver observer = (SensorObserver) observers.get(i);
+			//observer.update();
+			observer.update1(m);
+		}
+	}
+	public void registerObserver(SensorObserver o) {
+		observers.add(o);
+	}
+	public void removeObsever(SensorObserver o) {
+		observers.remove(o);
+	}
+	
+}
+
+
+Message:
+package sensor;
+public class Message {
+	Object origin;
+	public String sens;
+	int state;
+Message(Object origin, String type,int state){
+	this.origin=origin;
+	this.sens=type;
+	this.state=state;
+}
+public String toString() {
+	return "origin:"+this.origin+"\nsensortype:"+this.sens+"\nstate"+this.state;
+}
+}
+
+
+Sensor Observer
+
+package sensor;
+public interface SensorObserver {
+	public void update1(Message m);
+}
+Sensor Reader
+
+package sensor;
+public class SensorReader extends ConcreteSensorObserver implements Runnable {
+	public SensorReader(ConcreteSensorSubject[] subject) {
+		super(subject);
+		System.out.println("sensors activated");
+		Thread t = new Thread(this);
+		t.start();
+	}
+	@Override
+	public void run() {
+		//Do nothing, Messages printed through "update"
+	}
+}
+
+
+Sensor Subject
+package sensor;
+public interface SensorSubject {
+		public void registerObserver(SensorObserver o);
+		public void removeObsever(SensorObserver o);
+		public void publishMessage(Message m);
+		}
+
+TCPClient.java
+
+package sensor;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+public class TCPClient extends ConcreteSensorSubject implements Runnable { 
+	//gyroRotationY, magnetometerY, accelerometerAccelerationX
+	static String host;
+	static int port;
+	static Socket socket;
+	static InputStream input;
+	JSONArray valuesJSONArray;
+	InputStreamReader reader; 	
+	BufferedReader br; 
+	//reader is not static so all sensors can read the same line instead of each taking a separate line.
+	String sensorName;
+	int threshold;
+	JSONParser parser = new JSONParser(); 
+	public TCPClient(String host, int port, String sensorName, int threshold) throws UnknownHostException, IOException{
+		TCPClient.host = host;
+		TCPClient.port = port;
+		this.sensorName = sensorName;
+		socket = new Socket(host,port);
+		input = socket.getInputStream();
+		reader = new InputStreamReader(input);  
+		br = new BufferedReader(reader); 
+		this.threshold = threshold;
+		Thread t = new Thread(this);
+		t.start();
+	}
+	public TCPClient(String sensorName, int threshold) throws IOException{ 
+		this.sensorName = sensorName;   
+		reader = new InputStreamReader(input);  
+		br = new BufferedReader(reader);
+		this.threshold = threshold; 
+		Thread t = new Thread(this);
+		t.start(); 
+	}
+	@Override
+	public void run() {  
+		double sensorReading;
+		while (true) {
+			sensorReading = readSensor(sensorName); 
+			processReading(sensorReading, threshold);
+		}
+	}
+
+
+	public double readSensor(String sensorName) {
+
+		String line = ""; 
+		double double_Value = 0;
+		try {
+			if (line  != null) {//read line by line 
+				
+				line = (String) br.readLine();
+				System.out.println(line);
+				JSONObject jsonObject = (JSONObject) parser.parse(line); 
+				//System.out.println(jsonObject);
+				JSONObject accelObject = (JSONObject) jsonObject.get(sensorName);
+				valuesJSONArray = (JSONArray) accelObject.get("value");
+
+				//System.out.println( sensorName + " "+ value);
+				double_Value =Math.abs((double)  valuesJSONArray.get(0));	
+				return double_Value;
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	public void processReading(double reading, int threshold) {
+
+		if (reading > threshold) {
+			//System.out.println("Reading = " + reading);
+			publishMessage(new Message(this,sensorName,1));
+		}
+		try {
+			Thread.currentThread().sleep(100); //small delay to not read a lot of values consecutively
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+
